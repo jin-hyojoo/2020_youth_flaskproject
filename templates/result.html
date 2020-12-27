@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block list %}
+{% if book %}
+{% for b in book %}
+{% if b in lib %}
+<div>
+    <div class="booklist" style="float: left; padding-left:32%;">
+        <ul class="list-unstyled center-block my-5" style="width:500px; padding:15px; background-color:#E0FAFA;">
+            <li class="media">
+                <div class="media-body">
+                    <div id='here{{b}}' style="padding:30px;">
+                        <h5 class="mt-0 mb-1" style="padding-bottom: 20px;">Information</h5>
+                        <p><span class="label label-danger">도서명</span> <a href="#지도에 표시되는 함수"> {{book[b]['title']}}</a></p>
+                        <p><span class="label label-primary">저자</span> {{book[b]['author']}}</p>
+                        <p><span class="label label-primary">출판사</span> {{book[b]['publisher']}}</p>
+
+                        {% if lib %}
+                        {% for l in lib[b] %}
+                        {% if loop.index <=5 %}
+                        <div class="lib-info" style="border-top-color: powderblue; padding: 10px;
+                                                 border-top-style: dotted; margin: auto 5%; ">
+                            <p><span style="font-weight:600">도서관명</span>　{{l['libName']}} ({{l['lbiType']}})</p>
+                            <p><span style="font-weight:600">공휴일</span>　{{l['closeDay']}}</p>
+                            <p><span style="font-weight:600">주소</span>　{{l['address']}}</p>
+                            <p><span style="font-weight:600">홈페이지</span>　
+                                <a target="_blank" href="{{l['url']}}">{{l['url']}}</a></p>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            <li>
+                <button name="list" id="{{b}}" class="btn btn-default"
+                style="background-color: #bcbcbc6e; color: #484848;
+                font-weight: 600; width: 150px; margin-left: 300px;">
+                    도서관 더 보기
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+</ul>
+{% else %}
+<ul class="list-unstyled center-block my-5" style="width:500px; padding:15px; background-color:#E0FAFA;">
+    <li class="media"><h1>관련 도서가 없습니다.</h1>
+    </li>
+</ul>
+{% endif %}
+{% endblock %}
+{% block script %}
+<script>
+       $('button[name=list]').click(function(){
+            var reckey = $(this).attr('id');
+            console.log(reckey)
+
+            $.ajax({
+                method: 'POST',
+                url: '/list',
+                data: {'rec_key':reckey},
+                dataType : 'json',
+                success: function(response){
+                    console.log(response.data);
+                    $('#here'+reckey).append(response.data);
+                    $('#reckey').unwrap()
+                    $('button').remove('#reckey')
+                },
+                error: function(request, status, error){
+                    alert(error);
+                }
+            })
+       })
+</script>
+{% endblock %}
