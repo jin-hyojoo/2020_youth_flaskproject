@@ -1,0 +1,12 @@
+{% for lib in extra %}
+{% if loop.index > 5 %}
+<div class="lib-info" style="border-top-color: powderblue; padding: 10px;
+                                                 border-top-style: dotted; margin: auto 5%; ">
+    <p><span style="font-weight:600">도서관명</span>　{{lib['libName']}} ({{lib['lbiType']}})</p>
+    <p><span style="font-weight:600">공휴일</span>　{{lib['closeDay']}}</p>
+    <p><span style="font-weight:600">주소</span>　{{lib['address']}}</p>
+    <p><span style="font-weight:600">홈페이지</span>　
+        <a target="_blank" href="{{lib['url']}}">{{lib['url']}}</a></p>
+</div>
+{% endif %}
+{% endfor %}

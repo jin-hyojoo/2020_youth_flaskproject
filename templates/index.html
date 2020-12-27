@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% if data %}
+<p><h1>{{data}}</h1></p>
+<script> alert('"{{data}}"와 관련된 도서가 없습니다!'); </script>
+{% else %}
+
+{% endif %}
+{% endblock %}
+{% block script %}
+
+{% endblock %}
